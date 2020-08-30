@@ -4,11 +4,11 @@ using System.Text;
 
 namespace ArbolMulticamino
 {
-    class ArbolMultiCamino <T> where T : IComparable
+    public class ArbolMultiCamino <T> where T : IComparable
     {
 
         #region Clase Nodo
-        internal class Nodo
+        public class Nodo
         {
             public T[] datos;
             public Nodo[] hijos;
@@ -67,9 +67,12 @@ namespace ArbolMulticamino
             grado = _grado;
         }
 
-        private Nodo Raiz = null;
-        private Nodo BuscarHoja = null;
+        public Nodo Raiz = null;
+        Nodo BuscarHoja = null;
 
+        public LinkedList<T> RecolectorRecorridos = new LinkedList<T>();
+
+        
         public void Insertar(T dato)
         {
             if (Raiz == null)
@@ -87,28 +90,32 @@ namespace ArbolMulticamino
             }
         }
 
-        public bool TieneHijos()
+        public void InOrden(Nodo Recorrer)
         {
-            var TieneHijos = false; 
-
-            for (int i = 0; i < grado; i++)
+            if (Recorrer.hijos[0] != null)
             {
-                if (BuscarHoja.hijos[i] != null)
+                InOrden(Recorrer.hijos[0]);
+            }
+            for (int i = 0; i < grado-1; i++)
+            {
+                if (Recorrer.datos[i] != null)
                 {
-                    TieneHijos = true;
+                    RecolectorRecorridos.AddLast(Recorrer.datos[i]);
+                }
+                if (Recorrer.hijos[i + 1] != null)
+                {
+                    InOrden(Recorrer.hijos[i + 1]);
                 }
             }
-
-            return TieneHijos;
-        } 
-
+        }
 
         public void PosicionarHojaInsertar(T dato)
         {
             BuscarHoja = Raiz;
             var valorMenorEncontrado = false;
             var iteradorNodo = 0;
-            while (TieneHijos() == true)
+
+            while (BuscarHoja.datos[grado-2] !=null)
             {
                 while (valorMenorEncontrado == false)
                 {
@@ -119,37 +126,39 @@ namespace ArbolMulticamino
                             BuscarHoja = BuscarHoja.hijos[iteradorNodo];
                             valorMenorEncontrado = true;
                         }
-                        else
+                        else if(BuscarHoja.hijos[iteradorNodo] == null)
                         {
                             Nodo NuevoHijo = new Nodo(grado);
                             BuscarHoja.hijos[iteradorNodo] = NuevoHijo;
-                            BuscarHoja = NuevoHijo;
+                            BuscarHoja = BuscarHoja.hijos[iteradorNodo];
                             valorMenorEncontrado = true;
                         }
                         
                     }
                 
-                    if (iteradorNodo == (grado - 2) && valorMenorEncontrado == false)
+                    else if(iteradorNodo == grado-2 && valorMenorEncontrado == false)
                     {
                         if (BuscarHoja.hijos[iteradorNodo+1] != null)
                         {
                             BuscarHoja = BuscarHoja.hijos[iteradorNodo + 1];
                             valorMenorEncontrado = true;
                         }
-                        else
+                        else if(BuscarHoja.hijos[iteradorNodo + 1] == null)
                         {
                             Nodo NuevoHijo = new Nodo(grado);
-                            BuscarHoja.hijos[iteradorNodo+1] = NuevoHijo;
+                            BuscarHoja.hijos[iteradorNodo+ 1] = NuevoHijo;
                             BuscarHoja = NuevoHijo;
                             valorMenorEncontrado = true;
                         }
                     
                     }
+                    iteradorNodo++;
                 }
-                iteradorNodo++;
+                iteradorNodo = 0;
+                valorMenorEncontrado = false;
             }
 
-            iteradorNodo = 0;
+            
         }
     }
 }
