@@ -89,7 +89,28 @@ namespace ArbolMulticamino
                
             }
         }
+        //                              Recorridos
+        //-----------------------------------------------------------------------------------------
 
+        public void PreOrden(Nodo Raiz)
+        {
+            //agrego toda la raiz
+            for (int i = 0; i < grado -1; i++)
+            {
+                RecolectorRecorridos.AddLast(Raiz.datos[i]);
+            }
+            if (Raiz.hijos[0]!= null)
+            {
+                PreOrden(Raiz.hijos[0]);
+            }
+            for (int i = 1; i < grado - 1; i++)
+            {
+                 if (Raiz.hijos[i] != null)
+                 {
+                     PreOrden(Raiz.hijos[i]);
+                 }
+            }
+        }
         public void InOrden(Nodo Recorrer)
         {
             if (Recorrer.hijos[0] != null)
@@ -109,6 +130,28 @@ namespace ArbolMulticamino
             }
         }
 
+        public void PostOrden(Nodo Recorrer)
+        {
+            if (Recorrer.hijos[0] != null)
+            {
+                InOrden(Recorrer.hijos[0]);
+            }
+            for (int i = 0; i < grado - 1; i++)
+            {
+              
+                if (Recorrer.hijos[i + 1] != null)
+                {
+                    InOrden(Recorrer.hijos[i + 1]);
+                }
+                if (Recorrer.datos[i] != null)
+                {
+                    RecolectorRecorridos.AddLast(Recorrer.datos[i]);
+                }
+            }
+            
+        }
+
+        //-----------------------------------------------------------------------------------------
         public void PosicionarHojaInsertar(T dato)
         {
             BuscarHoja = Raiz;
