@@ -109,6 +109,27 @@ namespace ArbolMulticamino
             }
         }
 
+        public void PostOrden(Nodo Recorrer)
+        {
+            if (Recorrer.hijos[0] != null)
+            {
+                InOrden(Recorrer.hijos[0]);
+            }
+            for (int i = 0; i < grado - 1; i++)
+            {
+                if (Recorrer.hijos[i + 1] != null)
+                {
+                    InOrden(Recorrer.hijos[i + 1]);
+                }
+                if (Recorrer.datos[i] != null)
+                {
+                    RecolectorRecorridos.AddLast(Recorrer.datos[i]);
+                }
+            }
+            
+        }
+
+        //-----------------------------------------------------------------------------------------
         public void PosicionarHojaInsertar(T dato)
         {
             BuscarHoja = Raiz;
