@@ -24,29 +24,31 @@ namespace ApiMovies.Controllers
         // Ordenamiento segun recorrido 
         [HttpGet]
         [Route("{traversal}")]
-        public LinkedList<Movie> Metodo(string traversal)
+        public List<Movie> Metodo(string traversal)
         {
-            Arbol.RecolectorRecorridos.Clear();
-
             if (ArbolInicialiado == true && (traversal == "inorden" || traversal == "InOrden" || traversal == "inOrden"))
             {
-                Arbol.InOrden(Arbol.Raiz);
+                Arbol.RecolectorRecorridos.Clear();
+                Arbol.InOrden();
                 return Arbol.RecolectorRecorridos;
             }
 
             if (ArbolInicialiado == true && (traversal == "postorden" || traversal == "PostOrden" || traversal == "postOrden"))
             {
-                Arbol.PostOrden(Arbol.Raiz);
+                Arbol.RecolectorRecorridos.Clear();
+                Arbol.PostOrden();
                 return Arbol.RecolectorRecorridos;
             }
 
-            //if (ArbolInicialiado == true && (traversal == "preorden" || traversal == "PreOrden" || traversal == "preOrden"))
-            //{
-            //    Arbol.PreOrden(Arbol.Raiz);
-            //    return Arbol.RecolectorRecorridos;
-            //}
+            if (ArbolInicialiado == true && (traversal == "preorden" || traversal == "PreOrden" || traversal == "preOrden"))
+            {
+                Arbol.RecolectorRecorridos.Clear();
+                Arbol.PreOrden();
+                return Arbol.RecolectorRecorridos;
+            }
 
-            return null;
+            throw new NotImplementedException("No inicializo el arbol o No ingreso el nombre del recorrido según" +
+                "los parametros definidos");
         }
 
 

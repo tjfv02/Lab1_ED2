@@ -24,6 +24,9 @@ namespace ConsolaDePrueba
                 Console.Clear();
                 switch (decision)
                 {
+                    case 0:
+                        terminarCiclo = true;
+                        break;
                     case 1:
                         Numero nuevo = new Numero();
                         Console.WriteLine("Ingrese el numero");
@@ -31,15 +34,28 @@ namespace ConsolaDePrueba
                         Arbolin.Insertar(nuevo);
                         break;
                     case 2:
-                        Arbolin.InOrden(Arbolin.Raiz);
+                        Arbolin.InOrden();
                         foreach (var item in Arbolin.RecolectorRecorridos)
                         {
                             Console.WriteLine(item.valor);
                         }
                         Console.ReadLine();
                         break;
-                    case 0:
-                        terminarCiclo = true;
+                    case 3:
+                        Arbolin.PreOrden();
+                        foreach (var item in Arbolin.RecolectorRecorridos)
+                        {
+                            Console.WriteLine(item.valor);
+                        }
+                        Console.ReadLine();
+                        break;
+                    case 4:
+                        Arbolin.PostOrden();
+                        foreach (var item in Arbolin.RecolectorRecorridos)
+                        {
+                            Console.WriteLine(item.valor);
+                        }
+                        Console.ReadLine();
                         break;
                     default:
                         break;

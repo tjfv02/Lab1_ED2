@@ -4,11 +4,11 @@ using System.Text;
 
 namespace ArbolMulticamino
 {
-    public class ArbolMultiCamino <T> where T : IComparable
+    public class ArbolMultiCamino<T> where T : IComparable
     {
 
         #region Clase Nodo
-        public class Nodo
+        private class Nodo
         {
             public T[] datos;
             public Nodo[] hijos;
@@ -17,7 +17,7 @@ namespace ArbolMulticamino
 
             public Nodo(int _grado)
             {
-                datos = new T[_grado-1];
+                datos = new T[_grado - 1];
                 hijos = new Nodo[_grado];
                 grado = _grado;
             }
@@ -67,12 +67,13 @@ namespace ArbolMulticamino
             grado = _grado;
         }
 
-        public Nodo Raiz = null;
+        Nodo Raiz = null;
+        Nodo Recorredor;
         Nodo BuscarHoja = null;
 
-        public LinkedList<T> RecolectorRecorridos = new LinkedList<T>();
+        public List<T> RecolectorRecorridos = new List<T>();
 
-        
+
         public void Insertar(T dato)
         {
             if (Raiz == null)
@@ -86,47 +87,8 @@ namespace ArbolMulticamino
                 PosicionarHojaInsertar(dato);
 
                 BuscarHoja.InsertarOrdenar(dato);
-               
-            }
-        }
 
-        public void InOrden(Nodo Recorrer)
-        {
-            if (Recorrer.hijos[0] != null)
-            {
-                InOrden(Recorrer.hijos[0]);
             }
-            for (int i = 0; i < grado-1; i++)
-            {
-                if (Recorrer.datos[i] != null)
-                {
-                    RecolectorRecorridos.AddLast(Recorrer.datos[i]);
-                }
-                if (Recorrer.hijos[i + 1] != null)
-                {
-                    InOrden(Recorrer.hijos[i + 1]);
-                }
-            }
-        }
-
-        public void PostOrden(Nodo Recorrer)
-        {
-            if (Recorrer.hijos[0] != null)
-            {
-                InOrden(Recorrer.hijos[0]);
-            }
-            for (int i = 0; i < grado - 1; i++)
-            {
-                if (Recorrer.hijos[i + 1] != null)
-                {
-                    InOrden(Recorrer.hijos[i + 1]);
-                }
-                if (Recorrer.datos[i] != null)
-                {
-                    RecolectorRecorridos.AddLast(Recorrer.datos[i]);
-                }
-            }
-            
         }
 
         //-----------------------------------------------------------------------------------------
@@ -136,42 +98,42 @@ namespace ArbolMulticamino
             var valorMenorEncontrado = false;
             var iteradorNodo = 0;
 
-            while (BuscarHoja.datos[grado-2] !=null)
+            while (BuscarHoja.datos[grado - 2] != null)
             {
                 while (valorMenorEncontrado == false)
                 {
                     if (dato.CompareTo(BuscarHoja.datos[iteradorNodo]) == -1)
                     {
-                        if (BuscarHoja.hijos[iteradorNodo] !=null)
+                        if (BuscarHoja.hijos[iteradorNodo] != null)
                         {
                             BuscarHoja = BuscarHoja.hijos[iteradorNodo];
                             valorMenorEncontrado = true;
                         }
-                        else if(BuscarHoja.hijos[iteradorNodo] == null)
+                        else if (BuscarHoja.hijos[iteradorNodo] == null)
                         {
                             Nodo NuevoHijo = new Nodo(grado);
                             BuscarHoja.hijos[iteradorNodo] = NuevoHijo;
                             BuscarHoja = BuscarHoja.hijos[iteradorNodo];
                             valorMenorEncontrado = true;
                         }
-                        
+
                     }
-                
-                    else if(iteradorNodo == grado-2 && valorMenorEncontrado == false)
+
+                    else if (iteradorNodo == grado - 2 && valorMenorEncontrado == false)
                     {
-                        if (BuscarHoja.hijos[iteradorNodo+1] != null)
+                        if (BuscarHoja.hijos[iteradorNodo + 1] != null)
                         {
                             BuscarHoja = BuscarHoja.hijos[iteradorNodo + 1];
                             valorMenorEncontrado = true;
                         }
-                        else if(BuscarHoja.hijos[iteradorNodo + 1] == null)
+                        else if (BuscarHoja.hijos[iteradorNodo + 1] == null)
                         {
                             Nodo NuevoHijo = new Nodo(grado);
-                            BuscarHoja.hijos[iteradorNodo+ 1] = NuevoHijo;
+                            BuscarHoja.hijos[iteradorNodo + 1] = NuevoHijo;
                             BuscarHoja = NuevoHijo;
                             valorMenorEncontrado = true;
                         }
-                    
+
                     }
                     iteradorNodo++;
                 }
@@ -179,7 +141,99 @@ namespace ArbolMulticamino
                 valorMenorEncontrado = false;
             }
 
+
+        }
+
+        public void InOrden()
+        {
+            Recorredor = Raiz;
+            RecursividadInorden(Recorredor);
+        }
+
+        public void RecursividadInorden(object _Recorrer)
+        {
+            var Recorrer = _Recorrer as Nodo;
+
+            if (Recorrer.hijos[0] != null)
+            {
+                RecursividadInorden(Recorrer.hijos[0]);
+            }
+            for (int i = 0; i < grado - 1; i++)
+            {
+                if (Recorrer.datos[i] != null)
+                {
+                    RecolectorRecorridos.Add(Recorrer.datos[i]);
+                }
+                if (Recorrer.hijos[i + 1] != null)
+                {
+                    RecursividadInorden(Recorrer.hijos[i + 1]);
+                }
+            }
+        }
+
+        public void PostOrden()
+        {
+            Recorredor = Raiz;
+            RecursividadPostOrden(Recorredor);
+        }
+
+        public void RecursividadPostOrden(object _Recorrer)
+        {
+
+            var Recorrer = _Recorrer as Nodo;
+
+            if (Recorrer.hijos[0] != null)
+            {
+                RecursividadPostOrden(Recorrer.hijos[0]);
+            }
+            for (int i = 0; i < grado - 1; i++)
+            {
+                if (Recorrer.hijos[i + 1] != null)
+                {
+                    RecursividadPostOrden(Recorrer.hijos[i + 1]);
+                }
+                if (Recorrer.datos[i] != null)
+                {
+                    RecolectorRecorridos.Add(Recorrer.datos[i]);
+                }
+            }
+
+        }
+
+        public void PreOrden()
+        {
+            Recorredor = Raiz;
+
+            RecursividadPreOrden(Recorredor);
+        }
+
+        public void RecursividadPreOrden(object _Recorrer)
+        {
+            var Recorrer = _Recorrer as Nodo;
+
+            for (int i = 0; i < grado - 1; i++)
+            {
+                if (Recorrer.datos[i] != null)
+                {
+                    RecolectorRecorridos.Add(Recorrer.datos[i]);
+                }
+
+            }
+            if (Recorrer.hijos[0] != null)
+            {
+                RecursividadPreOrden(Recorrer.hijos[0]);
+            }
+
+                for (int i = 0; i < grado - 1; i++)
+                {
+                    if (Recorrer.hijos[i + 1] != null)
+                    {
+                        RecursividadPreOrden(Recorrer.hijos[i + 1]);
+                    }
+                }
+
             
+
         }
     }
 }
