@@ -19,15 +19,15 @@ namespace ApiMovies.Models
         {
             var temp = obj as Movie;
 
-            if (string.Compare(this.Title, temp.Title, StringComparison.Ordinal) == 0)
+            if (string.Compare(this.Title, temp.Title) == 0)
             {
                 return 0;
             }
-            else if (string.Compare(this.Title, temp.Title, StringComparison.Ordinal) == 1)
+            else if (string.Compare(this.Title, temp.Title) == 1)
             {
                 return 1;
             }
-            if (string.Compare(this.Title, temp.Title, StringComparison.Ordinal) == -1)
+            if (string.Compare(this.Title, temp.Title) == -1)
             {
                 return -1;
             }
