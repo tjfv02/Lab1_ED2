@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ArbolMulticamino;
 using ApiMovies.Models;
-//using Newtonsoft.Json;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -27,17 +26,19 @@ namespace ApiMovies.Controllers
         [Route("{traversal}")]
         public LinkedList<Movie> Metodo(string traversal)
         {
+            Arbol.RecolectorRecorridos.Clear();
+
             if (ArbolInicialiado == true && (traversal == "inorden" || traversal == "InOrden" || traversal == "inOrden"))
             {
                 Arbol.InOrden(Arbol.Raiz);
                 return Arbol.RecolectorRecorridos;
             }
 
-            //if (ArbolInicialiado == true && (traversal == "postorden" || traversal == "PostOrden" || traversal == "postOrden"))
-            //{
-            //    Arbol.PostOrden(Arbol.Raiz);
-            //    return Arbol.RecolectorRecorridos;
-            //}
+            if (ArbolInicialiado == true && (traversal == "postorden" || traversal == "PostOrden" || traversal == "postOrden"))
+            {
+                Arbol.PostOrden(Arbol.Raiz);
+                return Arbol.RecolectorRecorridos;
+            }
 
             //if (ArbolInicialiado == true && (traversal == "preorden" || traversal == "PreOrden" || traversal == "preOrden"))
             //{
@@ -61,7 +62,7 @@ namespace ApiMovies.Controllers
         //Recibe un archivo JSON con un listado de películas
         [HttpPost]
         [Route("populate")]
-        public async Task<Movie> Post([FromForm] IFormFile file)
+        public async Task<string> Post([FromForm] IFormFile file)
         {
             if (ArbolInicialiado == true)
             {
@@ -74,29 +75,13 @@ namespace ApiMovies.Controllers
                     Arbol.Insertar(item);
                 }
 
+                return "Ok";
+
             }
+       
 
 
-            return null;
+            return "InternalServerError";
         }
-
-        //[HttpPost]
-        //[Route("movies")]
-        //public string PostMovies()
-        //{
-        //    var MoviesJson = new Movie()
-        //    {
-        //        Title = "Star Wars",
-        //        Director = "Lucas ",
-        //        Genre = "Science Fiction",
-        //        ReleaseDate = DateTime.Now,
-        //        ImdbRating = 5,
-        //        RottenTomatoesRating = 1
-        //    };
-
-        //    var JsonMovies = JsonConvert.SerializeObject(MoviesJson);
-        //    return JsonMovies;
-        //}
-
     }
 }

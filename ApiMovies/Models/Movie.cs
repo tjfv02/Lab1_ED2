@@ -11,7 +11,7 @@ namespace ApiMovies.Models
         public string Director { get; set; }
         public float ImdbRating{ get; set; }
         public string Genre { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; }
         public int RottenTomatoesRating { get; set; }
         public string Title { get; set; }
 
