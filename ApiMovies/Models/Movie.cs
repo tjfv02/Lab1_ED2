@@ -7,6 +7,7 @@ namespace ApiMovies.Models
 {
     public class Movie : IComparable
     {
+
         public string Director { get; set; }
         public float ImdbRating{ get; set; }
         public string Genre { get; set; }
